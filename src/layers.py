@@ -6,7 +6,7 @@ class Layer(ABC):
 
     @abstractmethod
     def forward(self, X: np.array):
-    ...
+        ...
 
     @abstractmethod
     def backward(self, dz: np.array, learning_rate=0.001):
@@ -14,6 +14,7 @@ class Layer(ABC):
 
 
 class Dense(Layer):
+    """Dense layer without batching"""
 
     def __init__(self, in_size: int, out_size: int, reg_lambda: float = 0.0):
         self.X = None
@@ -28,13 +29,27 @@ class Dense(Layer):
             raise ValueError('X is not the same dimension as in_size')
         return np.dot(self.W, self.X) + self.B
 
-    def backward(self, dz: np.array, learning_rate=0.001)->np.array:
-        dW = np.outer(self.X,dz)
+    def backward(self, dz: np.array, learning_rate=0.001) -> np.array:
+        dW = np.outer(self.X, dz)
         dB = dz
-        dX = np.dot(dz,self.W)
-        self.W -= learning_rate*dW
-        self.B -= learning_rate*dB
+        dX = np.dot(dz, self.W)
+        self.W -= learning_rate * dW
+        self.B -= learning_rate * dB
         return dX
 
     def _check_dimension(self, X: np.array) -> bool:
         return X.shape[0] != self.W.shape[1]
+
+
+class Sigmoid(Layer):
+
+    def forward(self, X: np.array) -> np.array:
+        self.X = X
+        return self._sigmoid_fn(X)
+
+    def backward(self, dz: np.array, learning_rate=0.001) -> np.array:
+        return dz * self._sigmoid_fn(self.X) * (1 - self._sigmoid_fn(self.X))
+
+    @staticmethod
+    def _sigmoid_fn(X: np.array) -> np.array:
+        return 1 / (1 + np.e ** (-1 * X))
