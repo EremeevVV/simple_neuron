@@ -24,7 +24,7 @@ class MSE(LossFunction):
     def forward(self, predict_val: np.array, true_val: np.array) -> ndarray:
         self.predict_val = predict_val
         self.true_val = true_val
-        self.loss = - np.sum((self.predict_val - self.true_val) ** 2)
+        self.loss = np.sum((self.predict_val - self.true_val) ** 2)
         return self.loss
 
     def backward(self) -> np.array:
