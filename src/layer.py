@@ -25,19 +25,19 @@ class Dense(Layer):
 
     def forward(self, X: np.array) -> np.array:
         self.X = X
-        if self._check_dimension(X):
+        if self._is_wrong_dimension(X):
             raise ValueError('X is not the same dimension as in_size')
         return np.dot(self.W, self.X) + self.B
 
     def backward(self, dz: np.array, learning_rate=0.001) -> np.array:
-        dW = np.outer(self.X, dz)
+        dW = np.outer(dz, self.X)
         dB = dz
         dX = np.dot(dz, self.W)
         self.W -= learning_rate * dW
         self.B -= learning_rate * dB
         return dX
 
-    def _check_dimension(self, X: np.array) -> bool:
+    def _is_wrong_dimension(self, X: np.array) -> bool:
         return X.shape[0] != self.W.shape[1]
 
 
