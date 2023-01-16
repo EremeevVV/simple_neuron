@@ -15,7 +15,7 @@ def test_net_forward():
     dense2 = Dense(in_size=inner_dim, out_size=1)
     sigm2 = Sigmoid()
     loss = MSE()
-    net = Net(layers=[dense1, sigm1, dense2, sigm2], loss=loss)
+    net = Net(layers=[dense1, sigm1, dense2, sigm2], loss_fn=loss)
     # When
     result = net.forward(X_array)
 
@@ -30,7 +30,7 @@ def test_net_backward():
     dense2 = Dense(in_size=inner_dim, out_size=1)
     sigm2 = Sigmoid()
     loss = MSE()
-    net = Net(layers=[dense1, sigm1, dense2, sigm2], loss=loss)
+    net = Net(layers=[dense1, sigm1, dense2, sigm2], loss_fn=loss)
     # When
     result = net.forward(X_array)
 

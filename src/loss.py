@@ -6,7 +6,7 @@ from numpy import ndarray
 
 class LossFunction(ABC):
     @abstractmethod
-    def forward(self, predict_val: np.array, true_val: np.array) -> ndarray:
+    def forward(self, predict_val: np.array, true_val: np.array) -> np.array:
         ...
 
     @abstractmethod
